@@ -1,0 +1,15 @@
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - APPointment</title>
+      {% else %}
+      <title>Welcome to APPointment</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>APPointment:
+            <a href="{{ url_for('index') }}">Home</a></div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>
