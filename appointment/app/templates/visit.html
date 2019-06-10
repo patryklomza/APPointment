@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Umów wizytę</h1>
+    <form action="" method="POST" novalidate>
+        {{ form.hidden_tag() }}
+
+         <p>
+
+            {{ form.visit_date.label }}
+            {{ form.visit_date(size=32) }}
+            {% for error in form.visit_date.errors %}
+            <span style="color: red;">[{{error}}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.visit_time.label }}
+            {{ form.visit_time(size=32) }}
+            {% for error in form.visit_time.errors %}
+            <span style="color: red;">[{{error}}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+
+    </form>
+{% endblock content %}
+
