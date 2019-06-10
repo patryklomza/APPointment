@@ -7,7 +7,8 @@
       {% endif %}
     </head>
     <body>
-        <div>APPointment: <a href="/index">Home</a></div>
+        <div>APPointment:
+            <a href="{{ url_for('index') }}">Home</a></div>
         <hr>
         {% block content %}{% endblock %}
     </body>
