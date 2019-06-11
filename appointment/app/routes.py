@@ -7,6 +7,7 @@ from app.models import User
 
 @app.route('/')
 @app.route('/index')
+@login_required
 def index():
     return render_template('index.html', title='Home')
 
@@ -31,6 +32,7 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route('/visit', methods=['GET','POST'])
+@login_required
 def visit():
     form = VisitForm()
 
