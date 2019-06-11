@@ -1,3 +1,5 @@
 .idea/
 __pycache__/
 app/__pycache__/
+appointment/.flaskenv
+clean_db.py
