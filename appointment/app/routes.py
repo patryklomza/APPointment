@@ -1,6 +1,6 @@
 from app import app, db
 from app.forms import LoginForm, VisitForm, RegistrationForm
-from app.models import User
+from app.models import User, Visit
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
@@ -11,6 +11,7 @@ from werkzeug.urls import url_parse
 @login_required
 def index():
     return render_template('index.html', title='Home')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -44,15 +45,24 @@ def login():
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
+
 @app.route('/logout')
 def logout():
     logout_user()
     flash('Wylogowano poprawnie')
     return redirect(url_for('index'))
 
+
 @app.route('/visit', methods=['GET','POST'])
 @login_required
 def visit():
     form = VisitForm()
-
+    if form.validate_on_submit():
+        visit = Visit(visit_date=str(form.visit_date.data),
+                      visit_time=str(form.visit_time.data),
+                      customer=current_user)
+        db.session.add(visit)
+        db.session.commit()
+        flash(f'Wizyta umówiona {form.visit_date.data} na godzinę: {form.visit_time.data}.')
+        return redirect(url_for('index'))
     return render_template('visit.html', title='Umów wizytę', form=form)
