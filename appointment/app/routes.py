@@ -64,7 +64,7 @@ def visit():
         db.session.add(visit)
         db.session.commit()
         flash(f'Wizyta umówiona {form.visit_date.data} na godzinę: {form.visit_time.data}.')
-        return redirect(url_for('index'))
+        return redirect(url_for('user', username=current_user.username))
     return render_template('visit.html', title='Umów wizytę', form=form)
 
 
