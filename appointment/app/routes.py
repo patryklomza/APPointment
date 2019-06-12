@@ -66,3 +66,11 @@ def visit():
         flash(f'Wizyta umówiona {form.visit_date.data} na godzinę: {form.visit_time.data}.')
         return redirect(url_for('index'))
     return render_template('visit.html', title='Umów wizytę', form=form)
+
+
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    visits = Visit.query.filter_by(user_id=user.id)
+    return render_template('user.html', user=user, visits=visits)
