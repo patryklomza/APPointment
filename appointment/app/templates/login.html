@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block app_content %}
     <h1>Logowanie użytkownika</h1>
     <form action="" method="POST" novalidate>
         {{ form.hidden_tag() }}
@@ -22,4 +22,4 @@
         <p>{{ form.submit() }}</p>
     </form>
 <p>Nie masz konta? <a href="{{ url_for('register') }}">Kliknij, by przejść do rejestracji</a></p>
-{% endblock content %}
+{% endblock app_content %}
