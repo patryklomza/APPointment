@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>Użytkownik: {{ user.username }}</h1>
+    <hr>
+    {% for visit in visits %}
+    <p>
+        {{ visit.visit_date }} {{ visit.visit_time }}
+    </p>
+    {% endfor %}
+{% endblock app_content %}
