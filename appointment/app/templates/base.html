@@ -20,6 +20,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url_for('index') }}">Start</a></li>
                     <li><a href="{{ url_for('visit') }}">Umów wizytę</a></li>
+                    <li><a href="{{ url_for('user', username=current_user.username) }}">Profil</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous %}
@@ -35,10 +36,13 @@
 
 {% block content %}
     <div class="container">
-        {% with messages = get_flashed_messages() %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
         {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dissmissable" role="alert">{{ message }}
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
             {% endfor %}
         {% endif %}
         {% endwith %}
