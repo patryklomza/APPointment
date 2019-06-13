@@ -6,6 +6,7 @@
     {% for visit in visits %}
     <p>
         {{ visit.visit_date }} {{ visit.visit_time }}
+        <li><a href="{{ url_for('delete_visit',visit=visit.id) }}">Anuluj wizytę</a></li>
     </p>
     {% endfor %}
 {% endblock app_content %}
