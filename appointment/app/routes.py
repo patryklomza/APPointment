@@ -77,3 +77,17 @@ def user(username):
         return redirect(url_for('user', username=current_user.username))
     visits = Visit.query.filter_by(user_id=user.id)
     return render_template('user.html', user=user, visits=visits)
+
+
+@app.route('/user/visits/delete/<visit>')
+@login_required
+def delete_visit(visit):
+    visit_to_delete = Visit.query.filter_by(id=visit).first_or_404()
+    user = User.query.filter_by(id=visit_to_delete.user_id).first_or_404()
+    if user != current_user:
+        flash('Brak autoryzacji!', category='error')
+        return redirect(url_for('user', username=current_user.username))
+    db.session.delete(visit_to_delete)
+    db.session.commit()
+    flash('Anulowano wizytę')
+    return redirect(url_for('user', username=current_user.username))
