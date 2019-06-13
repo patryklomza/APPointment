@@ -68,7 +68,7 @@ def visit():
     return render_template('visit.html', title='Umów wizytę', form=form)
 
 
-@app.route('/user/<username>')
+@app.route('/user/visits/<username>')
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
