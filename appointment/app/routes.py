@@ -72,5 +72,8 @@ def visit():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
+    if user != current_user:
+        flash('Brak dostępu!', 'error')
+        return redirect(url_for('user', username=current_user.username))
     visits = Visit.query.filter_by(user_id=user.id)
     return render_template('user.html', user=user, visits=visits)
