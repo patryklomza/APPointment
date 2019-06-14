@@ -75,7 +75,10 @@ def user(username):
     if user != current_user:
         flash('Brak dostępu!', category='warning')
         return redirect(url_for('user', username=current_user.username))
-    visits = Visit.query.filter_by(user_id=user.id)
+    if user.is_admin:
+        visits = Visit.query.all()
+    else:
+        visits = Visit.query.filter_by(user_id=user.id)
     return render_template('user.html', user=user, visits=visits)
 
 
