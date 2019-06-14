@@ -10,6 +10,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     visits = db.relationship('Visit', backref='customer', lazy='dynamic')
+    is_admin = db.Column(db.Boolean(), default=0)
 
     def __repr__(self):
         return f'<User {self.username}>'
