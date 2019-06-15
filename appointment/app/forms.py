@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,  PasswordField, BooleanField, SubmitField, DateField, TimeField, SelectField
+from wtforms import StringField,  PasswordField, BooleanField, SubmitField, DateField, SelectField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 
@@ -25,7 +25,6 @@ class VisitForm(FlaskForm):
                ('18:00', '18:00'), ('18:30', '18:30')]
 
     visit_date = DateField('Data nowej wizyty',render_kw={"type":"date"})
-   # visit_time = TimeField('Godzina nowej wizyty',render_kw={"type":"time"})
     visit_time = SelectField('Godzina nowej wizyty', choices=choices)
     submit = SubmitField('Wyślij')
 
@@ -34,7 +33,7 @@ class RegistrationForm(FlaskForm):
     username = StringField('Nazwa użytkownika', validators=[DataRequired(message="Pole wymagane")])
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     password = PasswordField('Hasło użytkownika', validators=[DataRequired()])
-    password2 = PasswordField('Potwierdź hasło', validators=[DataRequired(), EqualTo('password')])
+    password2 = PasswordField('Potwierdź hasło', validators=[DataRequired(), EqualTo('password',message='Podaj identyczne hasła!')])
     submit = SubmitField('Zarejestruj')
 
     def validate_username(self, username):

@@ -8,7 +8,6 @@ from werkzeug.urls import url_parse
 
 @app.route('/')
 @app.route('/index')
-@login_required
 def index():
     return render_template('index.html', title='Home')
 
@@ -86,7 +85,12 @@ def visit():
 @app.route('/user/visits/<username>')
 @login_required
 def user(username):
+    """Display user profile page with user appointments
+
+    If user is_admin is True, display visits of all users
+    """
     user = User.query.filter_by(username=username).first_or_404()
+    customers = User.query.all()
     if user != current_user:
         flash('Brak dostępu!', category='warning')
         return redirect(url_for('user', username=current_user.username))
@@ -94,12 +98,17 @@ def user(username):
         visits = Visit.query.all()
     else:
         visits = Visit.query.filter_by(user_id=user.id)
-    return render_template('user.html', user=user, visits=visits)
+
+    return render_template('user.html', user=user, visits=visits, customers=customers)
 
 
 @app.route('/user/visits/delete/<visit>')
 @login_required
 def delete_visit(visit):
+    """Deletes chosen visit
+
+    If user id of given visit is not current_user id denies deleting this visit
+    """
     visit_to_delete = Visit.query.filter_by(id=visit).first_or_404()
     user = User.query.filter_by(id=visit_to_delete.user_id).first_or_404()
     if user != current_user:

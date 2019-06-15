@@ -19,7 +19,11 @@
         <tr>
             <th scope="row">{{ loop.index }}</th>
             {% if user.is_admin %}
-            <td>{{ visit.user_id }}</td>
+                {% for customer in customers %}
+                {% if customer.id == visit.user_id %}
+            <td>{{ customer.email }}</td>
+                {% endif %}
+                {% endfor %}
             {% endif %}
             <td>{{ visit.visit_date }}</td>
             <td>{{ visit.visit_time }}</td>
