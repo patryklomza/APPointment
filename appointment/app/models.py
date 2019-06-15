@@ -5,6 +5,10 @@ from app import login
 
 
 class User(UserMixin, db.Model):
+    """
+    Basic User capable of adding new visits and deleting existing ones from his profile.
+    is_admin can be set manually to True.
+    """
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -23,10 +27,14 @@ class User(UserMixin, db.Model):
 
 @login.user_loader
 def load_user(id):
+    """Given *id*, returns the associated User object."""
     return User.query.get(int(id))
 
 
 class Visit(db.Model):
+    """
+    Visit made by user
+    """
     id = db.Column(db.Integer, primary_key=True)
     visit_date = db.Column(db.Text, index=True)
     visit_time = db.Column(db.Text)
