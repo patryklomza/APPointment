@@ -90,6 +90,7 @@ def user(username):
     If user is_admin is True, display visits of all users
     """
     user = User.query.filter_by(username=username).first_or_404()
+    customers = User.query.all()
     if user != current_user:
         flash('Brak dostępu!', category='warning')
         return redirect(url_for('user', username=current_user.username))
@@ -97,7 +98,8 @@ def user(username):
         visits = Visit.query.all()
     else:
         visits = Visit.query.filter_by(user_id=user.id)
-    return render_template('user.html', user=user, visits=visits)
+
+    return render_template('user.html', user=user, visits=visits, customers=customers)
 
 
 @app.route('/user/visits/delete/<visit>')
