@@ -31,9 +31,9 @@ class VisitForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     username = StringField('Nazwa użytkownika', validators=[DataRequired(message="Pole wymagane")])
-    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    email = StringField('E-mail', validators=[DataRequired(), Email(message='Niepoprawny format adresu!')])
     password = PasswordField('Hasło użytkownika', validators=[DataRequired()])
-    password2 = PasswordField('Potwierdź hasło', validators=[DataRequired(), EqualTo('password',message='Podaj identyczne hasła!')])
+    password2 = PasswordField('Potwierdź hasło', validators=[DataRequired(), EqualTo('password', message='Podaj identyczne hasła!')])
     submit = SubmitField('Zarejestruj')
 
     def validate_username(self, username):
