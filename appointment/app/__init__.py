@@ -11,6 +11,8 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
+login.login_message = 'Musisz się zalogować, by zobaczyć tą stronę.'
+login.login_message_category = "info"
 login.login_view = 'login'
 bootstrap = Bootstrap(app)
 

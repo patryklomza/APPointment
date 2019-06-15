@@ -15,6 +15,10 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    """Display registration form and send back provided data
+
+    If user is already logged in redirect to index endpoint
+    """
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
@@ -30,6 +34,12 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """Display user login form
+
+    When user is already logged in, redirect to index endpoint.
+    If username and password are correct login_user() sets current_user
+    variable to that user
+    """
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = LoginForm()
@@ -56,6 +66,11 @@ def logout():
 @app.route('/visit', methods=['GET','POST'])
 @login_required
 def visit():
+    """Display visit form
+
+    If request method is 'GET', display form for making appointment
+    If request method is 'POST', write data to the database and redirect to user page
+    """
     form = VisitForm()
     if form.validate_on_submit():
         visit = Visit(visit_date=str(form.visit_date.data),
