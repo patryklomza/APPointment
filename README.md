@@ -23,10 +23,8 @@ with you, or your employees.
 Application uses: 
 
 **Python 3.7.3** 
-**Flask 1.0.3**
-**Werkzeug 0.15.4**
 
-**All necessary dependencies with their versions are also available in the requirements.txt file.**
+**All other necessary dependencies with their versions are also available in the requirements.txt file.**
 
 **Make sure you have proper Python version and *pip* installed**
 
