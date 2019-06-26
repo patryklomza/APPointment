@@ -4,3 +4,4 @@ app/__pycache__/
 appointment/.flaskenv
 clean_db.py
 appointment/insert_admin.py
+poza_projektem/
