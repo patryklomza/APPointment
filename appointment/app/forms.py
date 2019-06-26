@@ -24,7 +24,8 @@ class VisitForm(FlaskForm):
                ('17:00', '17:00'), ('17:30', '17:30'),
                ('18:00', '18:00'), ('18:30', '18:30')]
 
-    visit_date = DateField('Data nowej wizyty',render_kw={"type":"date"})
+    visit_date = DateField('Data nowej wizyty',render_kw={"type":"date"},
+                           validators=[DataRequired(message='Podaj datę!')])
     visit_time = SelectField('Godzina nowej wizyty', choices=choices)
     submit = SubmitField('Wyślij')
 

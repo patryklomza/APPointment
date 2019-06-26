@@ -27,7 +27,7 @@
             {% endif %}
             <td>{{ visit.visit_date }}</td>
             <td>{{ visit.visit_time }}</td>
-            <td> <li><a href="{{ url_for('delete_visit',visit=visit.id) }}">Anuluj wizytę</a></li></td>
+            <td> <li><a href="{{ url_for('delete_visit', visit=visit.id) }}">Anuluj wizytę</a></li></td>
         </tr>
         {% endfor %}
         </tbody>
