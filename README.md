@@ -24,7 +24,7 @@ Application uses:
 
 **Python 3.7.3** 
 
-**All other necessary dependencies with their versions are also available in the requirements.txt file.**
+**All other necessary dependencies with their versions are available in the requirements.txt file.**
 
 **Make sure you have proper Python version and *pip* installed**
 
@@ -32,7 +32,42 @@ Run following command to install all dependencies from requirements.txt file:
 
 `pip install -r requirements.txt`
 
+##Starting Application on MacOS Mojave 0.14.5 
 
+To run this applicaton:
+
+-1- In the terminal make sure you are in the `appoinment` directory (contains all the necessary files)
+
+-2- initiate database with following commands:
+
+`flask db init`
+`flask db migrate`
+`flask db upgrade`
+
+-3- insert user with Admin privileges by running this script located in 
+`proj_app` directory:
+
+`python insert_admin.py`
+
+Default admin username: admin
+Default admin password: admin
+
+
+-4- Use following commands to start the application server:
+
+`export FLASK_APP=appointment.py`
+`flask run`
+
+-5- Now application should be accessible in a browser of your choice at the following address:
+
+`http://127.0.0.1:5000/`
+
+-*- Alternatively you can run **appointment.py** script to start the application server:
+
+`python appointment.py`
+
+
+##inb4- TL:DR
 Application uses following extensions:
 
 **Python-Dotenv** - allows environment variables saved in .flaskenv file to be automatically imported when you run the `flask` command
@@ -77,35 +112,6 @@ Link to Documentation: <TODO>
 
 Link to Documentation: < TODO >
 
-##Starting Application on MacOS Mojave 0.14.5 
-
-To run this applicaton:
-
--1- In the terminal make sure you are in the `appoinment` directory (contains all necessary files)
-
--2- Use following commands to start the application server:
-
-`export FLASK_APP=microblog.py`
-`flask run`
-
--3- Now application should be accessible in a browser of your choice at the following address:
-
-`http://127.0.0.1:5000/`
-
--*- Alternatively you can run **appointment.py** script to start the application server:
-
-`python appointment.py`
-
-
-##Setting Database
-
-*Waiting for update*
-
-Contribute
-*Waiting for update*
-
-Support
-*Waiting for update*
 
 ##List of features to implement:
 < TODO >
