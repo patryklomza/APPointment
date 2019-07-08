@@ -6,7 +6,7 @@ from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 
 db = SQLAlchemy()
-migrate = Migrate(db)
+migrate = Migrate()
 login = LoginManager()
 login.login_message = 'Musisz się zalogować, by zobaczyć tą stronę.'
 login.login_message_category = "info"
