@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, DateField, SelectField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, ValidationError
+
+from app.models import Visit
 
 
 class VisitForm(FlaskForm):
@@ -20,3 +22,9 @@ class VisitForm(FlaskForm):
                            validators=[DataRequired(message='Podaj datę!')])
     visit_time = SelectField('Godzina nowej wizyty', choices=choices)
     submit = SubmitField('Wyślij')
+
+    def validate_visit_time(self, visit_time):
+        date_and_time = Visit.query.filter_by(visit_date=self.visit_date.data,
+                                              visit_time=visit_time.data).first()
+        if date_and_time is not None:
+            raise ValidationError('Podany termin jest już zajęty.')
