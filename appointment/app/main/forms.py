@@ -13,8 +13,11 @@ class VisitForm(FlaskForm):
     visit_time = QuerySelectField('Godzina nowej wizyty:', query_factory=lambda: ScheduleTime.query, allow_blank=False)
     submit = SubmitField('Wyślij')
 
+    def validate_visit_date(self, visit_date):
+        if visit_date.data < date.today():
+            raise ValidationError('Podany termin jest z przeszłości!')
+
     def validate_visit_time(self, visit_time):
-        date_and_time = Visit.query.filter_by(visit_date=self.visit_date.data,
-                                              visit_time=visit_time.data).first()
+        date_and_time = Visit.query.filter_by(visit_date=self.visit_date.data, visit_time=visit_time.data.time).first()
         if date_and_time is not None:
             raise ValidationError('Podany termin jest już zajęty.')
