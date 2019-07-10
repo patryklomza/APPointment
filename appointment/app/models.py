@@ -39,6 +39,20 @@ class Visit(db.Model):
     visit_date = db.Column(db.Text, index=True)
     visit_time = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    time_id = db.Column(db.Integer, db.ForeignKey('default_hour.id'))
 
     def __repr__(self):
         return f'<Visit {self.date} {self.time}>'
+
+
+class ScheduleTime(db.Model):
+    """
+    Default time intervals for making appointments by customers
+    """
+    __tablename__ = 'default_hour'
+    id = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.Text)
+    hours = db.relationship('Visit', backref='hours', lazy='dynamic')
+
+    def __repr__(self):
+        return str(self.time)
