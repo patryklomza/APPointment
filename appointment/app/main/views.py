@@ -24,7 +24,7 @@ def visit():
     if form.validate_on_submit():
         visit = Visit(visit_date=str(form.visit_date.data),
                       visit_time=str(form.visit_time.data),
-                      customer=current_user)
+                      customer=current_user, hours=form.visit_time.data)
         db.session.add(visit)
         db.session.commit()
         flash(f'Wizyta umówiona {form.visit_date.data} na godzinę: {form.visit_time.data}.', category='success')
