@@ -58,12 +58,14 @@ def delete_visit(visit):
 
     If user id of given visit is not current_user id denies deleting this visit
     """
-    visit_to_delete = Visit.query.filter_by(id=visit).first_or_404()
-    user = User.query.filter_by(id=visit_to_delete.user_id).first_or_404()
-    if user != current_user:
+    item = Visit.query.filter_by(id=visit).first_or_404()
+    item_owner = User.query.filter_by(id=item.user_id).first_or_404()
+    if current_user.is_admin or item_owner == current_user:
+        db.session.delete(item)
+        db.session.commit()
+        flash('Anulowano wizytę', category='success')
+        return redirect(url_for('main.user', username=current_user.username))
+    else:
         flash('Brak autoryzacji!', category='warning')
         return redirect(url_for('main.user', username=current_user.username))
-    db.session.delete(visit_to_delete)
-    db.session.commit()
-    flash('Anulowano wizytę', category='success')
-    return redirect(url_for('main.user', username=current_user.username))
+
