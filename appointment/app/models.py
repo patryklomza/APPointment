@@ -56,3 +56,22 @@ class ScheduleTime(db.Model):
 
     def __repr__(self):
         return str(self.time)
+
+
+class Role(db.Model):
+    '''
+    Role model
+    default field should be true only for one user, and false for others.
+    Role marked as default is assigned to new users upon registration.
+    '''
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64),  unique=True)
+    default = db.Column(db.Boolean, default=False, index=True)
+    permissions = db.Column(db.Integer)
+    users = db.Relationship('User', backref='role', lazy='dynamic')
+
+    def __init__(self, **kwargs):
+        super(Role, self).__init__(**kwargs)
+        if self.permissions is None:
+            self.permissions = 0
