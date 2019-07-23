@@ -61,7 +61,7 @@ class ScheduleTime(db.Model):
 class Role(db.Model):
     '''
     Role model
-    default field should be true only for one user, and false for others.
+    default field should be true only for one role, and false for others.
     Role marked as default is assigned to new users upon registration.
     '''
     __tablename__ = 'roles'
