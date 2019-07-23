@@ -75,3 +75,24 @@ class Role(db.Model):
         super(Role, self).__init__(**kwargs)
         if self.permissions is None:
             self.permissions = 0
+
+    def add_permission(self, perm):
+        if not self.has_permission(perm):
+            self.permissions += perm
+
+    def remove_permission(self, perm):
+        if self.has_permission(perm):
+            self.permissions -= perm
+
+    def reset_permissions(self):
+        self.permissions = 0
+
+    def has_permissions(self, perm):
+        return self.permissions & perm == perm
+
+class Permissions:
+    ADD = 1
+    EDIT = 2
+    DELETE = 4
+    MODERATE = 8
+    ADMIN = 16
