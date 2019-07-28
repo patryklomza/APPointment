@@ -6,3 +6,4 @@ class Config():
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
                               'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    APPOINTMENT_ADMIN = os.environ.get('APPOINTMENT_ADMIN')
