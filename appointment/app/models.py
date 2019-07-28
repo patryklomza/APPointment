@@ -1,6 +1,8 @@
+from flask import current_app
+
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin, login_manager
 from app import login
 
 
@@ -64,11 +66,12 @@ class Visit(db.Model):
     """
     Visit made by user
     """
+    __tablename__ = 'visits'
     id = db.Column(db.Integer, primary_key=True)
     visit_date = db.Column(db.Text, index=True)
     visit_time = db.Column(db.Text)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    time_id = db.Column(db.Integer, db.ForeignKey('default_hour.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    time_id = db.Column(db.Integer, db.ForeignKey('default_hours.id'))
 
     def __repr__(self):
         return f'<Visit {self.date} {self.time}>'
@@ -78,7 +81,7 @@ class ScheduleTime(db.Model):
     """
     Default time intervals for making appointments by customers
     """
-    __tablename__ = 'default_hour'
+    __tablename__ = 'default_hours'
     id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.Text)
     hours = db.relationship('Visit', backref='hours', lazy='dynamic')
@@ -105,6 +108,9 @@ class Role(db.Model):
         if self.permissions is None:
             self.permissions = 0
 
+    def __repr__(self):
+        return f'<Role {self.name}>'
+
     def add_permission(self, perm):
         if not self.has_permission(perm):
             self.permissions += perm
@@ -116,10 +122,29 @@ class Role(db.Model):
     def reset_permissions(self):
         self.permissions = 0
 
-    def has_permissions(self, perm):
+    def has_permission(self, perm):
         return self.permissions & perm == perm
 
-class Permissions:
+    @staticmethod
+    def insert_roles():
+        roles = {
+            'User': [Permission.ADD, Permission.EDIT, Permission.DELETE],
+            'Employee': [Permission.ADD, Permission.EDIT, Permission.DELETE, Permission.MODERATE],
+            'Administrator': [Permission.ADD, Permission.EDIT, Permission.DELETE, Permission.MODERATE, Permission.ADMIN]
+        }
+        default_role = 'User'
+        for r in roles:
+            role = Role.query.filter_by(name=r).first()
+            if role is None:
+                role = Role(name=r)
+            role.reset_permissions()
+            for perm in roles[r]:
+                role.add_permission(perm)
+            role.default = (role.name == default_role)
+            db.session.add(role)
+        db.session.commit()
+
+class Permission:
     ADD = 1
     EDIT = 2
     DELETE = 4
