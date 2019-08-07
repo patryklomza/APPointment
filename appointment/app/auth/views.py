@@ -44,6 +44,8 @@ def login():
             flash('Nieprawidłowa nazwa użytkownika lub hasło!', category='danger')
             return redirect(url_for('auth.login'))
         login_user(user, remember=form.remember_me.data)
+        if current_user.is_administrator:
+            return redirect(url_for('admin.admin_dashboard'))
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('main.index')

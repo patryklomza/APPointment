@@ -18,7 +18,6 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     visits = db.relationship('Visit', backref='customer', lazy='dynamic')
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-    is_admin = db.Column(db.Boolean(), default=0)
 
 
     def __init__(self, **kwargs):

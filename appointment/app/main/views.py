@@ -44,7 +44,7 @@ def user(username):
     if user != current_user:
         flash('Brak dostępu!', category='warning')
         return redirect(url_for('main.user', username=current_user.username))
-    if user.is_admin:
+    if user.is_administrator:
         visits = Visit.query.all()
     else:
         visits = Visit.query.filter_by(user_id=user.id)
