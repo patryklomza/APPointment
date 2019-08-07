@@ -38,8 +38,9 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def can(self, perm):
-        return self.role is not None and self.role.has_permissions(perm)
+        return self.role is not None and self.role.has_permission(perm)
 
+    @property
     def is_administrator(self):
         return self.can(Permission.ADMIN)
 
@@ -48,6 +49,7 @@ class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):
         return False
 
+    @property
     def is_administrator(self):
         return False
 
