@@ -19,6 +19,7 @@
             <td>{{ visit.visit_date }}</td>
             <td>{{ visit.visit_time }}</td>
             <td> <li><a href="{{ url_for('main.delete_visit', visit=visit.id) }}">Anuluj wizytę</a></li></td>
+            <td> <li><a href="{{ url_for('main.edit_visit', id=visit.id) }}">Edytuj wizytę</a></li></td>
 
         </tr>
         {% endfor %}

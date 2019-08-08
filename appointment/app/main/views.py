@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from app import db
 from app.models import User, Visit
 from flask import render_template, url_for, flash, redirect
@@ -68,4 +70,22 @@ def delete_visit(visit):
     else:
         flash('Brak autoryzacji!', category='warning')
         return redirect(url_for('main.user', username=current_user.username))
+
+
+@main.route('/visits/edit/<id>', methods=['GET', 'POST'])
+@login_required
+def edit_visit(id):
+    visit = Visit.query.get_or_404(id)
+    form = VisitForm()
+    if form.validate_on_submit():
+        visit.visit_date = str(form.visit_date.data)
+        visit.visit_time = str(form.visit_time.data)
+        db.session.commit()
+        flash('Poprawnie edytowano wizytę!', category='success')
+        return redirect(url_for('admin.list_visits'))
+
+    form.visit_date.data = datetime.strptime(visit.visit_date, '%Y-%m-%d')
+    return render_template('main/visit.html', title='Edytuj', form=form)
+
+
 
