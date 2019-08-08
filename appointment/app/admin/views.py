@@ -12,6 +12,6 @@ def admin_dashboard():
 
 @admin.route('/visits')
 @admin_required
-def customer_visits():
+def list_visits():
     all_visits = Visit.query.join(Visit.customer).filter_by(role_id=1)
-    return render_template('admin/all_visits.html', all_visits=all_visits)
+    return render_template('admin/list_visits.html', all_visits=all_visits)
