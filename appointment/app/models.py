@@ -73,6 +73,7 @@ class Visit(db.Model):
     visit_time = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     time_id = db.Column(db.Integer, db.ForeignKey('default_hours.id'))
+    court_id = db.Column(db.Integer, db.ForeignKey('courts.id'))
 
     def __repr__(self):
         return f'<Visit {self.date} {self.time}>'
@@ -89,6 +90,13 @@ class ScheduleTime(db.Model):
 
     def __repr__(self):
         return str(self.time)
+
+
+class Court(db.Model):
+    __tablename__ = 'courts'
+    id = db.Column(db.Integer, primary_key=True)
+    is_active = db.Column(db.Boolean, default=True)
+    visits = db.relationship('Visit', backref='visits', lazy='dynamic')
 
 
 class Role(db.Model):
