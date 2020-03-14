@@ -78,6 +78,8 @@ class Visit(db.Model):
     def __repr__(self):
         return f'<Visit {self.date} {self.time}>'
 
+    def assign_court(self, court_list):
+            self.court_id = court_list.pop()
 
 class ScheduleTime(db.Model):
     """
@@ -97,6 +99,32 @@ class Court(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     is_active = db.Column(db.Boolean, default=True)
     visits = db.relationship('Visit', backref='visits', lazy='dynamic')
+
+    def __str__(self):
+        return f'court #{self.id}'
+
+    @staticmethod
+    def get_active_courts_id_list():
+        courts = Court.query.filter_by(is_active=True).all()
+        active_courts = [court.id for court in courts]
+        return active_courts
+
+    @staticmethod
+    def get_reserved_courts_id_list(date, time):
+        visits = Visit.query.filter_by(visit_date=date, visit_time=time).all()
+        reserved_courts = [visit.court_id for visit in visits]
+        return reserved_courts
+
+    @staticmethod
+    def get_available_courts(date, time):
+        active_courts = Court.get_active_courts_id_list()
+        reserved_courts = Court.get_reserved_courts_id_list(date, time)
+        available_courts = list(set(active_courts) - set(reserved_courts))
+        if available_courts:
+            return available_courts
+        else:
+            return None
+
 
 
 class Role(db.Model):

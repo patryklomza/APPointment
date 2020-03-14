@@ -1,5 +1,5 @@
 from app import db
-from app.models import User, Visit
+from app.models import User, Visit, Court
 from flask import render_template, url_for, flash, redirect
 from flask_login import current_user, login_required
 from .forms import VisitForm
@@ -21,14 +21,18 @@ def visit():
     If request method is 'POST', write data to the database and redirect to user page
     """
     form = VisitForm()
+
     if form.validate_on_submit():
+        courts = Court.get_available_courts(date=str(form.visit_date.data), time=str(form.visit_time.data))
         visit = Visit(visit_date=str(form.visit_date.data),
                       visit_time=str(form.visit_time.data),
-                      customer=current_user, hours=form.visit_time.data)
+                      customer=current_user, hours=form.visit_time.data,
+                      )
+        visit.assign_court(court_list=courts)
         db.session.add(visit)
         db.session.commit()
         flash(f'Wizyta umówiona {form.visit_date.data} na godzinę: {form.visit_time.data}.', category='success')
-        return redirect(url_for('main.user', username=current_user.username))
+        return redirect(url_for('main.user', username=current_user.username,))
     return render_template('main/visit.html', title='Umów wizytę', form=form)
 
 
