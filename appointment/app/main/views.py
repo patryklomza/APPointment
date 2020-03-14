@@ -1,5 +1,5 @@
 from app import db
-from app.models import User, Visit
+from app.models import User, Visit, Court
 from flask import render_template, url_for, flash, redirect
 from flask_login import current_user, login_required
 from .forms import VisitForm
@@ -21,14 +21,18 @@ def visit():
     If request method is 'POST', write data to the database and redirect to user page
     """
     form = VisitForm()
+
     if form.validate_on_submit():
+        courts = Court.get_available_courts(date=str(form.visit_date.data), time=str(form.visit_time.data))
         visit = Visit(visit_date=str(form.visit_date.data),
                       visit_time=str(form.visit_time.data),
-                      customer=current_user, hours=form.visit_time.data)
+                      customer=current_user, hours=form.visit_time.data,
+                      )
+        visit.assign_court(court_list=courts)
         db.session.add(visit)
         db.session.commit()
         flash(f'Wizyta umówiona {form.visit_date.data} na godzinę: {form.visit_time.data}.', category='success')
-        return redirect(url_for('main.user', username=current_user.username))
+        return redirect(url_for('main.user', username=current_user.username,))
     return render_template('main/visit.html', title='Umów wizytę', form=form)
 
 
@@ -44,7 +48,7 @@ def user(username):
     if user != current_user:
         flash('Brak dostępu!', category='warning')
         return redirect(url_for('main.user', username=current_user.username))
-    if user.is_admin:
+    if user.is_administrator:
         visits = Visit.query.all()
     else:
         visits = Visit.query.filter_by(user_id=user.id)
@@ -58,12 +62,14 @@ def delete_visit(visit):
 
     If user id of given visit is not current_user id denies deleting this visit
     """
-    visit_to_delete = Visit.query.filter_by(id=visit).first_or_404()
-    user = User.query.filter_by(id=visit_to_delete.user_id).first_or_404()
-    if user != current_user:
+    item = Visit.query.filter_by(id=visit).first_or_404()
+    item_owner = User.query.filter_by(id=item.user_id).first_or_404()
+    if current_user.is_admin or item_owner == current_user:
+        db.session.delete(item)
+        db.session.commit()
+        flash('Anulowano wizytę', category='success')
+        return redirect(url_for('main.user', username=current_user.username))
+    else:
         flash('Brak autoryzacji!', category='warning')
         return redirect(url_for('main.user', username=current_user.username))
-    db.session.delete(visit_to_delete)
-    db.session.commit()
-    flash('Anulowano wizytę', category='success')
-    return redirect(url_for('main.user', username=current_user.username))
+

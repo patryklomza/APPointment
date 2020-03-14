@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired, ValidationError
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
 from datetime import datetime, date
-from app.models import Visit, ScheduleTime
+from app.models import Visit, ScheduleTime, Court
 
 
 class VisitForm(FlaskForm):
@@ -18,6 +18,11 @@ class VisitForm(FlaskForm):
             raise ValidationError('Podany termin jest z przeszłości!')
 
     def validate_visit_time(self, visit_time):
+        available_courts = Court.get_available_courts(date=self.visit_date.data, time=self.visit_time.data.time)
         date_and_time = Visit.query.filter_by(visit_date=self.visit_date.data, visit_time=visit_time.data.time).first()
-        if date_and_time is not None:
-            raise ValidationError('Podany termin jest już zajęty.')
+        if date_and_time is not None and available_courts is None:
+            raise ValidationError('Wszystkie korty są już zarezerwowane!!!')
+
+
+
+
