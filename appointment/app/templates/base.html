@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+        crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+          integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+          crossorigin="anonymous"></script>
+
+  <title>Document</title>
+</head>
+<body>
+{% block navbar %}
+  <div class="container">
+    <nav class="nav navbar navbar-expand-flex navbar-dark bg-dark">
+      <a class="navbar-brand" href="{{ url_for('main.index') }}">APPointment</a>
+      {% if current_user.is_anonymous %}
+      {% else %}
+        <ul class="nav justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link text-success"
+               href="{{ url_for('main.index') }}">Start</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+               href=" {{ url_for('main.visit') }}">Rezerwacje</a>
+          </li>
+          <li class="nav=item">
+            <a class="nav-link"
+               href="{{ url_for('main.user', username=current_user.username) }}">Profil</a>
+          </li>
+        </ul>
+      {% endif %}
+      <div>
+        <ul class="nav justify-content-right text-gray">
+          {% if current_user.is_anonymous %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+
+  </div>
+{% endblock navbar %}
+
+{% block content %}
+  <div class="bg">
+
+    <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dissmissable"
+                 role="alert">{{ message }}
+              <button type="button" class="close" data-dismiss="alert"
+                      aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+<div class="container base-container col-lg-6">
+      {# application content needs to be provided in the app_content block #}
+      {% block app_content %}{% endblock %}
+</div>
+{% endblock content %}
+
+</body>
+</html>

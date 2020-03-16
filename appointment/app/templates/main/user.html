@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block app_content %}
+
+  <div class="container visit-form col-lg-8" id="form-text">
+    <h1>Użytkownik: {{ user.username }} {% if user.is_administrator %}
+      (Admin){% endif %}</h1>
+    <hr>
+    <table class="visit-form">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        {% if user.is_administrator %}
+          <th scope="col">Użytkownik</th>
+        {% endif %}
+        <th scope="col">Data wizyty</th>
+        <th scope="col">Godzina Wizyty</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for visit in visits %}
+        <tr>
+          <th scope="row">{{ loop.index }}</th>
+          {% if user.is_administrator %}
+            {% for customer in customers %}
+              {% if customer.id == visit.user_id %}
+                <td>{{ customer.email }}</td>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          <td>{{ visit.visit_date }}</td>
+          <td>{{ visit.visit_time }}</td>
+          <td>
+            <li><a href="{{ url_for('main.delete_visit', visit=visit.id) }}">Anuluj
+              wizytę</a></li>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock app_content %}

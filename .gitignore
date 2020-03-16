@@ -1,2 +1,10 @@
 .idea/
 appointment/app.db
+__pycache__/
+app/__pycache__/
+appointment/.flaskenv
+clean_db.py
+appointment/insert_admin.py
+poza_projektem/
+appointment/migrations
+appointment/insert_time_intervals.py

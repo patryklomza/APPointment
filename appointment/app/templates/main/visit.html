@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% from "main/_formhelpers.html" import render_field %}
+
+
+{% block app_content %}
+
+  <h1 id="new-visit-header">Rezerwacja kortu</h1>
+
+  <form id="form-text" class="col-lg-8" method="POST" novalidate>
+      {{ form.csrf_token }}
+      <div class="form-group col-lg-8 mx-lg-auto">
+        {{ render_field(form.visit_date, class='form-control form-control-lg',type='date') }}
+      </div>
+      <div class="form-group col-lg-8 mx-lg-auto">
+        {{ render_field(form.visit_time, class='form-control form-control-lg') }}
+      </div>
+      <input type="submit" class="btn btn-primary btn-lg" value="Rezerwuj">
+    </form>
+{% endblock app_content %}
+
