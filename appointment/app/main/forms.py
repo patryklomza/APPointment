@@ -8,9 +8,9 @@ from app.models import Visit, ScheduleTime, Court
 
 
 class VisitForm(FlaskForm):
-    visit_date = DateField('Data nowej wizyty',render_kw={"type":"date"},
+    visit_date = DateField('Data rezerwacji',render_kw={"type":"date"},
                            validators=[DataRequired(message='Podaj datę!')])
-    visit_time = QuerySelectField('Godzina nowej wizyty:', query_factory=lambda: ScheduleTime.query, allow_blank=False)
+    visit_time = QuerySelectField('Godzina rezerwacji:', query_factory=lambda: ScheduleTime.query, allow_blank=False)
     submit = SubmitField('Wyślij')
 
     def validate_visit_date(self, visit_date):
