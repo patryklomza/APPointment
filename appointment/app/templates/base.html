@@ -26,31 +26,31 @@
       {% if current_user.is_administrator %}
         <ul class="nav justify-content-center">
           <li class="nav=item">
-            <a class="nav-link"
+            <a class="nav-link text-light"
                href="{{ url_for('main.reservations', username=current_user.username) }}">Rezerwacje</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link"
+            <a class="nav-link text-light"
                href="{{ url_for('admin.users') }}">Użytkownicy</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link"
+            <a class="nav-link text-light"
                href=" {{ url_for('main.visit') }}">Nowa Rezerwacja</a>
           </li>
         </ul>
       {% else %}
         <ul class="nav justify-content-center">
           <li class="nav-item">
-            <a class="nav-link text-success"
-               href="{{ url_for('main.index') }}">Start</a>
+            <a class="nav-link text-light"
+               href=" {{ url_for('main.visit') }}">Rezerwuj</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link"
-               href=" {{ url_for('main.visit') }}">Reservations</a>
+            <a class="nav-link text-light"
+               href="{{ url_for('main.index') }}">Profil</a>
           </li>
           <li class="nav=item">
-            <a class="nav-link"
-               href="{{ url_for('main.user', username=current_user.username) }}">History</a>
+            <a class="nav-link text-light"
+               href="{{ url_for('main.reservations', username=current_user.username) }}">Historia</a>
           </li>
         </ul>
         {% endif %}
@@ -59,11 +59,11 @@
         <ul class="nav justify-content-right text-gray">
           {% if current_user.is_anonymous %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('auth.login') }}">Zaloguj</a>
+              <a class="nav-link text-light" href="{{ url_for('auth.login') }}">Zaloguj</a>
             </li>
           {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('auth.logout') }}">Wyloguj</a>
+              <a class="nav-link text-light" href="{{ url_for('auth.logout') }}">Wyloguj</a>
             </li>
           {% endif %}
         </ul>
