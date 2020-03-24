@@ -1,5 +1,5 @@
 .idea/
-appointment/app.db
+./appointment/app.db
 __pycache__/
 app/__pycache__/
 appointment/.flaskenv
