@@ -36,9 +36,9 @@ def visit():
     return render_template('main/visit.html', title='Umów wizytę', form=form)
 
 
-@main.route('/user/visits/<username>')
+@main.route('/visits/<username>')
 @login_required
-def user(username):
+def reservations(username):
     """Display user profile page with user appointments
 
     If user is_admin is True, display visits of all users
@@ -53,7 +53,7 @@ def user(username):
     else:
         visits = Visit.query.filter_by(user_id=user.id)
 
-    return render_template('main/user.html', user=user, visits=visits, customers=customers)
+    return render_template('main/reservations_list.html', user=user, visits=visits, customers=customers)
 
 @main.route('/user/visits/delete/<visit>')
 @login_required
@@ -64,7 +64,7 @@ def delete_visit(visit):
     """
     item = Visit.query.filter_by(id=visit).first_or_404()
     item_owner = User.query.filter_by(id=item.user_id).first_or_404()
-    if current_user.is_admin or item_owner == current_user:
+    if current_user.is_administrator or item_owner == current_user:
         db.session.delete(item)
         db.session.commit()
         flash('Anulowano wizytę', category='success')
