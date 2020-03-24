@@ -23,6 +23,22 @@
       <a class="navbar-brand" href="{{ url_for('main.index') }}">APPointment</a>
       {% if current_user.is_anonymous %}
       {% else %}
+      {% if current_user.is_administrator %}
+        <ul class="nav justify-content-center">
+          <li class="nav=item">
+            <a class="nav-link"
+               href="{{ url_for('main.reservations', username=current_user.username) }}">Rezerwacje</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+               href="{{ url_for('admin.users') }}">Użytkownicy</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+               href=" {{ url_for('main.visit') }}">Nowa Rezerwacja</a>
+          </li>
+        </ul>
+      {% else %}
         <ul class="nav justify-content-center">
           <li class="nav-item">
             <a class="nav-link text-success"
@@ -30,30 +46,29 @@
           </li>
           <li class="nav-item">
             <a class="nav-link"
-               href=" {{ url_for('main.visit') }}">Rezerwacje</a>
+               href=" {{ url_for('main.visit') }}">Reservations</a>
           </li>
           <li class="nav=item">
             <a class="nav-link"
-               href="{{ url_for('main.user', username=current_user.username) }}">Profil</a>
+               href="{{ url_for('main.user', username=current_user.username) }}">History</a>
           </li>
         </ul>
+        {% endif %}
       {% endif %}
       <div>
         <ul class="nav justify-content-right text-gray">
           {% if current_user.is_anonymous %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+              <a class="nav-link" href="{{ url_for('auth.login') }}">Zaloguj</a>
             </li>
           {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+              <a class="nav-link" href="{{ url_for('auth.logout') }}">Wyloguj</a>
             </li>
           {% endif %}
         </ul>
       </div>
     </nav>
-
-
   </div>
 {% endblock navbar %}
 
