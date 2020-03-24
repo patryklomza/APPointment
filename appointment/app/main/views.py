@@ -36,9 +36,9 @@ def visit():
     return render_template('main/visit.html', title='Umów wizytę', form=form)
 
 
-@main.route('/user/visits/<username>')
+@main.route('/visits/<username>')
 @login_required
-def user(username):
+def reservations(username):
     """Display user profile page with user appointments
 
     If user is_admin is True, display visits of all users
@@ -53,7 +53,7 @@ def user(username):
     else:
         visits = Visit.query.filter_by(user_id=user.id)
 
-    return render_template('main/user.html', user=user, visits=visits, customers=customers)
+    return render_template('main/reservations_list.html', user=user, visits=visits, customers=customers)
 
 @main.route('/user/visits/delete/<visit>')
 @login_required
