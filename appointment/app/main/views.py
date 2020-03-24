@@ -64,7 +64,7 @@ def delete_visit(visit):
     """
     item = Visit.query.filter_by(id=visit).first_or_404()
     item_owner = User.query.filter_by(id=item.user_id).first_or_404()
-    if current_user.is_admin or item_owner == current_user:
+    if current_user.is_administrator or item_owner == current_user:
         db.session.delete(item)
         db.session.commit()
         flash('Anulowano wizytę', category='success')
